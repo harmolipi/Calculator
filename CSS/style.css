@@ -1,0 +1,90 @@
+body, html {
+    height: 100vh;
+}
+
+#calculator-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-areas:
+        "display-area display-area display-area display-area"
+        "display-area display-area display-area display-area"
+        "clear clear negative operators"
+        "numbers-area numbers-area numbers-area operators"
+        "numbers-area numbers-area numbers-area operators"
+        "numbers-area numbers-area numbers-area operators"
+        "numbers-area numbers-area numbers-area operators";
+    width: 600px;
+    height: 500px;
+    border: solid 1px;
+    padding: 10px;
+    margin: 0 auto;
+    /* row-gap: 1px; */
+    /* column-gap: 1px; */
+}
+
+#display {
+    grid-area: display-area;
+    /* grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3; */
+    background-color: blue;
+}
+
+#clear {
+    grid-area: clear;
+    /* grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4; */
+    background-color: yellow;
+}
+
+#negative {
+    grid-area: negative;
+    background-color: rgb(155, 71, 194);
+}
+
+#operators {
+    grid-area: operators;
+    background-color: rgb(89, 89, 177);
+    display: grid;
+    margin-top: 1px;
+    padding-bottom: 1px;
+    row-gap: 1px;
+    column-gap: 1px;
+}
+
+.operator {
+    background-color: rgb(58, 218, 196);
+}
+
+#numbers {
+    grid-area: numbers-area;
+    background-color: green;
+    padding: 2px;
+    display: grid;
+    row-gap: 1px;
+    column-gap: 1px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    /* grid-template-areas:
+        "7 8 9"
+        "4 5 6"
+        "1 2 3"
+        "zero zero decimal"; */
+    direction: rtl;
+}
+
+#zero {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
+button {
+    background-color: rgb(211, 211, 211);
+    color: black;
+    font-size: 2em;
+    border: none;
+}
