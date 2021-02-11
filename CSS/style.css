@@ -69,7 +69,7 @@ button {
     border: none;
     text-align: center;
     text-decoration: none;
-    transition-duration: 0.05;
+    transition-duration: 2.05;
     font-family: monospace;
 }
 
@@ -82,8 +82,9 @@ button:hover {
   outline: none;
 }
 
-button.numbers:active, button#clear:active, button#sign:active {
+button.numbers:active, button#clear:active, button#sign:active, .number-click {
   background-color: rgb(211, 211, 211);
+  transition-duration: 2.05;
 }
 
 button#backspace {
@@ -93,10 +94,15 @@ button#backspace {
   font-size: 4em;
 }
 
-button#backspace:active {
-  background-color: rgb(165, 78, 78);
+button#backspace:hover {
+  opacity: 1;
+   background-color: rgb(235, 137, 137);
 }
 
-button.operators:active, button.operators:focus, button#equals:active {
+button#backspace:active, button#backspace.backspace-click {
+  background-color: rgb(212, 115, 115);
+}
+
+button.operators:active, button.operators:focus, button#equals:active, .operator-click, button#equals.operator-click {
   background-color: rgb(89, 185, 245);
 }

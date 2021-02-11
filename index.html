@@ -12,25 +12,25 @@
     <div id="calculator-container">
         <div id="display">0</div>
         <div id="button-container">
-            <button id="backspace">&lsaquo;</button>
-            <button id="clear">C</button>
-            <button id="sign">(-)</button>
-            <button class="operators" id="divide">/</button>
+            <button id="backspace" value="Backspace">&lsaquo;</button>
+            <button id="clear" value="Delete">C</button>
+            <button id="sign" value="sign">(-)</button>
+            <button class="operators" id="divide" value="/">/</button>
             <button class="numbers" value="7"><kbd>7</kbd></button>
-            <button class="numbers" value="8">8</button>
+            <button class="numbers" value="8"><kbd>8</kbd></button>
             <button class="numbers" value="9">9</button>
-            <button class="operators" id="multiply">x</button>
+            <button class="operators" id="multiply" value="*">x</button>
             <button class="numbers" value="4">4</button>
             <button class="numbers" value="5">5</button>
             <button class="numbers" value="6">6</button>
-            <button class="operators" id="subtract">-</button>
+            <button class="operators" id="subtract" value="-">-</button>
             <button class="numbers" value="1">1</button>
             <button class="numbers" value="2">2</button>
             <button class="numbers" value="3">3</button>
-            <button class="operators" id="add">+</button>
+            <button class="operators" id="add" value="+">+</button>
             <button class="numbers" id="zero" value="0">0</button>
             <button class="numbers" value=".">.</button>
-            <button class="operators" id="equals">=</button>
+            <button class="operators" id="equals" value="Enter">=</button>
         </div>
     </div>
     <script type="application/javascript">
@@ -46,28 +46,111 @@
             }
             return x / y;
         };
-        const equals = (x, y) => x;
+        const equals = (x, y) => {
+            console.log('equalling1');
+            x;
+        }
         // const operate = (operation, x, y) => operation(x, y);
+        // const operate = (operation, x, y) => {
+        //     if (operation === 'add') return add(x, y);
+        //     else if (operation === 'subtract') return subtract(x, y);
+        //     else if (operation === 'multiply') return multiply(x, y);
+        //     else if (operation === 'divide') return divide(x, y);
+        //     else if (operation === 'equals') return equals(x, y);
+        // };
         const operate = (operation, x, y) => {
-            if (operation === 'add') return add(x, y);
-            else if (operation === 'subtract') return subtract(x, y);
-            else if (operation === 'multiply') return multiply(x, y);
-            else if (operation === 'divide') return divide(x, y);
-            else if (operation === 'equals') return equals(x, y);
+            switch (operation) {
+                case 'add':
+                    return add(x, y);
+                case 'subtract':
+                    return subtract(x, y);
+                case 'multiply':
+                    return multiply(x, y);
+                case 'divide':
+                    return divide(x, y);
+                case 'equals':
+                    return equals(x, y);
+            }
         };
         const display = document.querySelector('#display');
         const numbers = document.querySelectorAll('.numbers');
         const operators = document.querySelectorAll('.operators');
         const clearButton = document.querySelector('#clear');
         const backspace = document.querySelector('#backspace');
-        const keys = Array.from(document.querySelectorAll('kbd'));
+        const buttons = Array.from(document.querySelectorAll('button'));
+        const numberList = /[\d\.]/;
+        const operatorList = /[+-/*]/;
 
-        // keys.forEach(key = {
-        //     key.addEventListener('click', () => {
+        numbers.forEach(number => number.addEventListener('keyup', (e) => {
+            if (e.propertyName !== 'number-click') return;
+            e.target.classList.remove('number-click');
+        }));
 
-        //     })
-        // })
+        const buttonDownAction = (e) => {
+            console.log(`Key pressed is ${e.key} and type is ${typeof(e.key)}`);
+            const thisButton = document.querySelector(`[value="${e.key}"]`);
+            const thisKey = thisButton.value;
+            console.log(`This key is ${thisKey}`);
+            console.log(e.key);
+            console.log(thisButton);
 
+            if (numberList.test(thisKey)) {
+                thisButton.classList.add('number-click');
+                numberPress(thisKey);
+                console.log(`This is entered number: ${enteredNumber}`);
+            } else {
+                switch (thisKey) {
+                    case '+':
+                        thisButton.classList.add('operator-click');
+                        console.log('plus button');
+                        operatorPress('add');
+                        break;
+                    case '-':
+                        thisButton.classList.add('operator-click');
+                        operatorPress('subtract');
+                        break;
+                    case '*':
+                        thisButton.classList.add('operator-click');
+                        operatorPress('multiply');
+                        break;
+                    case '/':
+                        thisButton.classList.add('operator-click');
+                        operatorPress('divide');
+                        break;
+                    case 'Enter':
+                        thisButton.classList.add('operator-click');
+                        console.log('enter button');
+                        operatorPress('equals');
+                        break;
+                    case 'Backspace':
+                        console.log('backspace');
+                        thisButton.classList.add('backspace-click');
+                        backspaceCharacters();
+                        break;
+                    case 'Delete':
+                        thisButton.classList.add('number-click');
+                        clear();
+                        break;
+                }
+            }
+
+        };
+
+        const buttonUpAction = (e) => {
+            const thisButton = document.querySelector(`[value="${e.key}"]`);
+            if (thisButton.classList.contains('number-click')) {
+                thisButton.classList.remove('number-click');
+            } else if (thisButton.classList.contains('operator-click')) {
+                thisButton.classList.remove('operator-click');
+            } else if (thisButton.classList.contains('backspace-click')) {
+                console.log('removing backspace-click');
+                thisButton.classList.remove('backspace-click');
+            }
+        }
+
+        window.addEventListener('keydown', buttonDownAction);
+
+        window.addEventListener('keyup', buttonUpAction);
 
         const clear = () => { //reset everything
             currentOperator = '';
@@ -107,26 +190,22 @@
                 currentValue += value;
                 display.textContent = currentValue;
             } else if (!(value === '.' && currentValue.includes('.')) && currentValue.length <= displaySize) {
-                console.log(`length is ${currentValue.length}`);
-                console.log(`type is ${typeof (currentValue)}`);
                 currentValue += value;
                 display.textContent += value;
             }
 
         };
 
-        numbers.forEach(number => {
-            number.addEventListener('click', () => {
-                if (clearMem) clear(); //starting a new calculation              
-                if (divideByZero) clear(); //starting over after error
-                updateDisplay(number.value);
-                y = Number(currentValue);
-                enteredNumber = true; //last button pushed was a number
-            })
-        });
+        const numberPress = num => {
+            if (clearMem) clear(); //starting a new calculation           
+            if (divideByZero) clear(); //starting over after error
+            updateDisplay(num);
+            y = Number(currentValue);
+            enteredNumber = true; //last button pushed was a number
+        }
 
-        operators.forEach(operator => {
-            operator.addEventListener('click', () => {
+        const operatorPress = operator => {
+                console.log(operator);
                 clearDisplay = true;
 
                 if (clearMem) clearMem = false; //doesn't clear memory if you click on another operator after equals
@@ -134,23 +213,25 @@
                 if (divideByZero) clear();
 
                 if (currentOperator === '' || currentOperator === 'equals') {
-                    currentOperator = operator.id;
+                    currentOperator = operator;
                 } else {
                     previousOperator = currentOperator;
-                    currentOperator = operator.id;
+                    currentOperator = operator;
+                    console.log('double equals');
                 }
 
                 if (x === '') {
                     x = y; //shift the previous number to x
                 } else if ((enteredNumber || currentOperator === 'equals') && previousOperator !== '') {
-                    answer = operate(previousOperator, x, y);
+                    // answer = operate(previousOperator, x, y);
+                    answer = Math.round((operate(previousOperator, x, y) * 100)) / 100;
                     if (divideByZero) {
                         answer = 'NO BUENO';
                     } else if (answer.toString().length > displaySize) {
                         answer = 'TOO LONG';
                         tooLong = true;
                     }
-                    x = answer;
+                    // x = answer;
                     currentValue = answer;
                     updateDisplay(answer);
                     if (answer !== 'NO BUENO' && answer !== 'TOO LONG') {
@@ -165,36 +246,59 @@
                 }
 
                 enteredNumber = false; //last button pushed was an operator
+            };
 
+        numbers.forEach(number => {
+            number.addEventListener('click', () => {
+                numberPress(number.value);
+            })
+        });
+
+        operators.forEach(operator => {
+            operator.addEventListener('click', () => {
+                console.log(`Operator ID is ${operator.id}`);
+                operatorPress(operator.id);
             })
         });
 
         clearButton.addEventListener('click', () => clear());
 
-        sign.addEventListener('click', () => {
+        const signChange = () => {
             x = Number(currentValue);
             answer = operate('multiply', currentValue, (-1));
             y = answer;
             x = '';
             currentValue = answer;
             display.textContent = currentValue;
-            console.log(currentValue);
+        }
+
+        sign.addEventListener('click', () => {
+            signChange();
+            // x = Number(currentValue);
+            // answer = operate('multiply', currentValue, (-1));
+            // y = answer;
+            // x = '';
+            // currentValue = answer;
+            // display.textContent = currentValue;
+            // console.log(currentValue);
         });
 
-        backspace.addEventListener('click', () => {
-                if (divideByZero || tooLong) {
+        const backspaceCharacters = () => {
+            if (divideByZero || tooLong) {
                     clear();
                 } else {
                     currentValue = currentValue.toString().slice(0, -1);
-                    y = Number(currentValue);
                     if (currentValue === '' || currentValue === '-') {
                         currentValue = '0';
                     }
+                    y = Number(currentValue);
+                    x = '';
                     display.textContent = currentValue;
                 }
-
                 enteredNumber = true;
-            });
+        };
+
+        backspace.addEventListener('click', backspaceCharacters);
 
 
     </script>
