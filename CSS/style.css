@@ -22,7 +22,6 @@ h1 {
     height: 500px;
     border: solid 1px grey;
     border-radius: 2px;
-    /* padding: 10px; */
     margin: 0 auto;
 }
 
@@ -46,11 +45,6 @@ h1 {
     grid-gap: 1px;
     border-top: solid 1px grey;
 }
-
-/* #clear {
-  grid-column-start: 2;
-  grid-column-end: 3;
-} */
 
 #zero {
   grid-column-start: 1;
@@ -88,7 +82,6 @@ button.numbers:active, button#clear:active, button#sign:active, .number-click {
 }
 
 button#backspace {
-  /* color: rgb(138, 138, 138); */
   color: black;
   background-color: rgb(255, 169, 169);
   font-size: 4em;
