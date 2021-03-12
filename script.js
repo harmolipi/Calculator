@@ -43,6 +43,7 @@ const displaySize = 7;
 const numberList = /[\d\.]/; //check if key is a number or another button
 const lastDot = /\.$/; //check if last character is a dot
 const expCheck = /e\+/;
+const decCheck = /\.$/
 const longFormat = new Intl.NumberFormat("en-US", { maximumFractionDigits: (displaySize - 1) });
 
 //variable initializations
@@ -213,7 +214,7 @@ function updateDisplay(value) {
             isExponential = false;
         } else {
             currentValue += value;
-            if (!expCheck.test(currentValue)) {
+            if (!expCheck.test(currentValue) && !decCheck.test(currentValue)) {
                 display.textContent = longFormat.format(currentValue);
             } else {
                 display.textContent = currentValue;
